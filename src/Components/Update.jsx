@@ -1,8 +1,10 @@
 import React, { useState,useEffect} from 'react';
 import { Button, Checkbox, Form } from 'semantic-ui-react'
 import axios from 'axios';
+import { useHistory } from 'react-router';
 
 export default function Update() {
+    let history =useHistory();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [checkbox, setCheckbox] = useState(false);
@@ -19,6 +21,8 @@ export default function Update() {
             firstName,
             lastName,
             checkbox
+        }).then(()=>{
+            history.push('/read')
         })
     }
     return (

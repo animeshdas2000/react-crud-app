@@ -3,6 +3,7 @@ import React,{useEffect,useState} from 'react';
 
 import { Table,Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
+
 export default function Read() {
     const [APIdata,setAPIdata]=useState([]);
     useEffect (()=>{
@@ -11,6 +12,12 @@ export default function Read() {
             setAPIdata(response.data);
         })        
     },[])
+    const getData = () => {
+        axios.get(`https://61404b785cb9280017a11200.mockapi.io/api/v1/fakeData`)
+            .then((getData) => {
+                 setAPIdata(getData.data);
+             })
+    }
     const setData = (data) => {
         let { id,firstName,lastName,checkbox}=data;
         localStorage.setItem('ID',id);
@@ -19,6 +26,12 @@ export default function Read() {
         localStorage.setItem('Checked Val',checkbox);
         
      }
+    const onDelete = (id)=>{
+        axios.delete(`https://61404b785cb9280017a11200.mockapi.io/api/v1/fakeData/${id}`)
+        .then(()=>{
+           getData();
+        })
+    }
     return (
         <div>
             <Table singleLine>
@@ -28,6 +41,7 @@ export default function Read() {
                         <Table.HeaderCell>Last Name</Table.HeaderCell>
                         <Table.HeaderCell>Checked</Table.HeaderCell>
                         <Table.HeaderCell>Update</Table.HeaderCell>
+                        <Table.HeaderCell>Delete</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
@@ -44,6 +58,9 @@ export default function Read() {
                                 <Button onClick={()=> setData(data)}>Update</Button>
                                </Table.Cell>
                                 </Link>
+                                <Table.Cell> 
+                                <Button onClick={()=> onDelete(data.id)}>Delete</Button>
+                               </Table.Cell>
                             </Table.Row>)
                         })
                     }
